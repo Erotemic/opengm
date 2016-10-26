@@ -22,7 +22,7 @@ def regularizer(labels):
    val=abs(float(labels[0])-float(labels[1]))
    return val*0.4
 
-print "generate 2d grid gm"
+print("generate 2d grid gm")
 regularizer=opengm.PythonFunction(function=regularizer,shape=[256,256])
 gm=opengm.grid2d2Order(unaries,regularizer=regularizer)
 
@@ -32,5 +32,5 @@ icm.infer()
 arg=icm.arg()
 arg=arg.reshape(shape)
 
-print numpy.round(img)
-print arg
+print(numpy.round(img))
+print(arg)

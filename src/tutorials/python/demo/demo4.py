@@ -9,13 +9,13 @@ if __name__ == "__main__":
 	args = sys.argv
 
 	if len(args)!=11 :
-		print "Usage: ",  args[0] , " infile outfile red1 green1 blue1 red2 green2 blue2 T lambda"
+		print("Usage: ",  args[0] , " infile outfile red1 green1 blue1 red2 green2 blue2 T lambda")
 		sys.exit(0)
 
 	img = vigra.readImage(args[1])
 
 	if img.shape[2]!=3:
-		print "Image must be RGB"
+		print("Image must be RGB")
 		sys.exit(0)
 
 	T 	 = float(args[9])

@@ -10,13 +10,13 @@ if __name__ == "__main__":
 	args = sys.argv
 
 	if len(args)!=11 :
-		print "Usage: ",  args[0] , " infile outfile red1 green1 blue1 red2 green2 blue2 T lambda"
+		print("Usage: ",  args[0] , " infile outfile red1 green1 blue1 red2 green2 blue2 T lambda")
 		sys.exit(0)
 
 	img = vigra.readImage(args[1])
 
 	if img.shape[2]!=3:
-		print "Image must be RGB"
+		print("Image must be RGB")
 		sys.exit(0)
 
 	T 	 = float(args[9])
@@ -69,15 +69,15 @@ if __name__ == "__main__":
 	        self.cmap = matplotlib.colors.ListedColormap ( numpy.random.rand ( self.numLabels,3))
 	        matplotlib.interactive(True)
 	    def begin(self,inference):
-	        print "begin of inference"
+	        print("begin of inference")
 	    def end(self,inference):
-	        print "end of inference"
+	        print("end of inference")
 	    def visit(self,inference):
-	    	print "visit"
+	    	print("visit")
 	        gm=inference.gm()
 	        labelVector=inference.arg()
-	        print labelVector.shape
-	        print self.shape
+	        print(labelVector.shape)
+	        print(self.shape)
 	        labelVector=labelVector.reshape(self.shape)
 	        plt.imshow(labelVector*255.0, cmap=self.cmap,interpolation="nearest") 
 	       	plt.draw()

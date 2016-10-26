@@ -10,7 +10,7 @@ def _injectGenericInferenceParameterInterface(solverParamClass,infParam,subInfPa
    BoostPythonMetaclass=solverParamClass.__class__
    class InjectorGenericInferenceParameter(object):
       def __init__(self,*args,**kwargs):
-         print "in init"
+         print("in init")
       class __metaclass__(BoostPythonMetaclass):
          def __init__(self, name, bases, dict):
             for b in bases:

@@ -34,7 +34,7 @@ class PyCallback(object):
         Args : 
             inference : python wrapped c++ solver which is passed from c++
         """
-        print "begin"
+        print("begin")
     def end(self,inference):
         """
         this function is called from c++ when inference ends
@@ -42,7 +42,7 @@ class PyCallback(object):
         Args : 
             inference : python wrapped c++ solver which is passed from c++
         """
-        print "end"
+        print("end")
     def visit(self,inference):
         """
         this function is called from c++ each time the visitor is called
@@ -53,7 +53,7 @@ class PyCallback(object):
         
         arg = inference.arg()
         gm  = inference.gm()
-        print "energy ",gm.evaluate(arg)
+        print("energy ",gm.evaluate(arg))
 
         arg=arg.reshape(self.shape)*255
         plt.imshow(arg.T, cmap='gray',interpolation="nearest") 
@@ -169,7 +169,7 @@ if __name__ == "__main__":
     inf=opengm.inference.Imc(gm,parameter=opengm.InfParam())
 
 
-    print "inf"
+    print("inf")
     inf.setStartingPoint(inf.arg())
         # set up visitor
     callback=PyCallback(shape,numLabels)

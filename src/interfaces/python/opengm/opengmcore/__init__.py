@@ -304,8 +304,8 @@ def pottsModel3d(unaries, regularizer, order='numpy', operator='adder'):
         f = adder._pottsModel3d
     else :
         f = multiplier._pottsModel3d
-    print unaries.shape
-    print regularizer.shape
+    print(unaries.shape)
+    print(regularizer.shape)
     gm = f(unaries, regularizer, order == 'numpy')
     return gm
 

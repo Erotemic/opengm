@@ -9,13 +9,13 @@ if __name__ == "__main__":
 	args = sys.argv
 
 	if len(args)!=8 :
-		print "Usage: ",  args[0] , " infile hdf5-outfile red green blue T lambda"
+		print("Usage: ",  args[0] , " infile hdf5-outfile red green blue T lambda")
 		sys.exit(0)
 
 	img = vigra.readImage(args[1])
 
 	if img.shape[2]!=3:
-		print "Image must be RGB"
+		print("Image must be RGB")
 		sys.exit(0)
 
 	T 	 = float(args[6])
@@ -36,7 +36,7 @@ if __name__ == "__main__":
 	unaries[:,0]=T
 	unaries[:,1]=diffArray
 
-	print diffArray
+	print(diffArray)
 
 	gm.addFactors(gm.addFunctions(unaries),numpy.arange(numVar))
 
