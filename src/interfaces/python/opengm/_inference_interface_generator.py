@@ -8,10 +8,12 @@ from _inference_parameter_injector import \
 from _inference_injector import _injectGenericInferenceInterface
 from _misc import defaultAccumulator
 import sys
-from opengmcore import index_type,value_type,label_type
+from opengmcore import index_type, value_type, label_type
 from abc import ABCMeta, abstractmethod, abstractproperty
 from optparse import OptionParser
 import inspect
+
+
 class InferenceBase:
     __metaclass__ = ABCMeta
 
@@ -24,18 +26,19 @@ class InferenceBase:
         pass
 
     #@abstractproperty
-    #def gm(self):
+    # def gm(self):
     #    pass
 
     @abstractmethod
     def arg(self, out=None):
         pass
 
-    #def bound(self, out=None):
+    # def bound(self, out=None):
     #    return self.gm.evaluate(self.arg(out))
 
 
 class ImplementationPack(object):
+
     def __init__(self):
         self.implDict = {}
 
@@ -139,15 +142,8 @@ def classGenerator(
         together to one class GraphCut
     """
 
-
-    #print "className ",classname
-    members =  inspect.getmembers(exampleClass, predicate=inspect.ismethod)
-
-
-
-
-
-
+    # print "className ",classname
+    members = inspect.getmembers(exampleClass, predicate=inspect.ismethod)
 
     def inference_init(self, gm, accumulator=None, parameter=None):
         # self._old_init()
@@ -163,7 +159,7 @@ def classGenerator(
         # dualdec.)
         hyperParamKeywords = self._infClasses.hyperParameterKeywords
         numHyperParams = len(hyperParamKeywords)
-        userHyperParams = [None]*numHyperParams
+        userHyperParams = [None] * numHyperParams
         collectedHyperParameters = 0
         # get the users hyper parameter ( if given)
 
@@ -189,17 +185,17 @@ def classGenerator(
         try:
             # get the selected inference class and the parameter
             if(numHyperParams == 0):
-                
+
                 self._selectedInfClass, self._selectedInfParamClass = inferenceClasses.implDict[
-                        "__NONE__"][(self.operator, self.accumulator)]
+                    "__NONE__"][(self.operator, self.accumulator)]
             else:
                 hp = tuple(str(x) for x in userHyperParams)
                 self._selectedInfClass, self._selectedInfParamClass = inferenceClasses.implDict[
                     hp][(self.operator, self.accumulator)]
         except:
-            dictStr=str(inferenceClasses.implDict)
-            raise RuntimeError("given seminring (operator = %s ,accumulator = %s) is not implemented for this solver\n %s" % \
-                (self.operator, self.accumulator,dictStr))
+            dictStr = str(inferenceClasses.implDict)
+            raise RuntimeError("given seminring (operator = %s ,accumulator = %s) is not implemented for this solver\n %s" %
+                               (self.operator, self.accumulator, dictStr))
 
         if self._meta_parameter is None:
             self.parameter = self._selectedInfClass._parameter()
@@ -218,7 +214,7 @@ def classGenerator(
         # dualdec.)
         hyperParamKeywords = inferenceClasses.hyperParameterKeywords
         numHyperParams = len(hyperParamKeywords)
-        userHyperParams = [None]*numHyperParams
+        userHyperParams = [None] * numHyperParams
         collectedHyperParameters = 0
         # get the users hyper parameter ( if given)
 
@@ -241,17 +237,17 @@ def classGenerator(
         else:
             userHyperParams = defaultHyperParams
 
-        #try:
+        # try:
         # get the selected inference class and the parameter
         if(numHyperParams == 0):
-            
+
             _selectedInfClass, _selectedInfParamClass = inferenceClasses.implDict[
-                    "__NONE__"][(operator, accumulator)]
+                "__NONE__"][(operator, accumulator)]
         else:
             hp = tuple(str(x) for x in userHyperParams)
             _selectedInfClass, _selectedInfParamClass = inferenceClasses.implDict[
                 hp][(operator, accumulator)]
-        #except:
+        # except:
         #    dictStr=str(inferenceClasses.implDict)
         #    raise RuntimeError("given seminring (operator = %s ,accumulator = %s) is not implemented for this solver\n %s" % \
         #        (operator, accumulator,dictStr))
@@ -265,6 +261,7 @@ def classGenerator(
             assert cppParam is not None
 
         return cppParam
+
     def verboseVisitor(self, printNth=1, multiline=True):
         """ factory function to get a verboseVisitor:
 
@@ -280,7 +277,7 @@ def classGenerator(
         """
         return self.inference.verboseVisitor(printNth, multiline)
 
-    def timingVisitor(self, visitNth=1,reserve=0,verbose=True, multiline=True,timeLimit=float('inf')):
+    def timingVisitor(self, visitNth=1, reserve=0, verbose=True, multiline=True, timeLimit=float('inf')):
         """ factory function to get a verboseVisitor:
 
             A verboseVisitor will print some information while inference is running
@@ -294,7 +291,7 @@ def classGenerator(
         **Notes**:
             The usage of a timingVisitor can slow down inference a bit
         """
-        return self.inference.timingVisitor(visitNth=visitNth,reserve=reserve,verbose=verbose, multiline=multiline,timeLimit=timeLimit)
+        return self.inference.timingVisitor(visitNth=visitNth, reserve=reserve, verbose=verbose, multiline=multiline, timeLimit=timeLimit)
 
     def pythonVisitor(self, callbackObject, visitNth):
         """ factory function to get a pythonVisitor:
@@ -347,7 +344,7 @@ def classGenerator(
         **Args**:
             labels : starting point labeling
         """
-        numpyLabels=np.require(labels,dtype=label_type)
+        numpyLabels = np.require(labels, dtype=label_type)
         self.inference.setStartingPoint(numpyLabels)
 
     def bound(self):
@@ -365,7 +362,8 @@ def classGenerator(
         reset a inference solver (structure of gm must not change)
         """
         return self.inference.reset()
-    def marginals(self,vis):
+
+    def marginals(self, vis):
         """get the marginals for a subset of variable indices
 
         Args:
@@ -379,7 +377,7 @@ def classGenerator(
         """
         return self.inference.marginals(vis)
 
-    def factorMarginals(self,fis):
+    def factorMarginals(self, fis):
         """get the marginals for a subset of variable indices
 
         Args:
@@ -426,7 +424,7 @@ def classGenerator(
         """
         self.inference.addConstraints(
             lpVariableIndices, coefficients, lowerBounds, upperBounds)
-            
+
     def getEdgeLabeling(self):
         return self.inference.getEdgeLabeling()
 
@@ -464,7 +462,6 @@ def classGenerator(
         """
         return self.inference.lpFactorVariableIndex(factorIndex, labels)
 
-
     def generateParamHelp():
 
         # simple parameter
@@ -489,9 +486,11 @@ def classGenerator(
                 # loop over all hp Keywords (usually there is max. 1 hyper parameter)
                 # (should it be allowed to use more than 1 hp??? right now it is!)
                 assert len(inferenceClasses.hyperParameterKeywords) == 1
-                hyperParameterKeyword = inferenceClasses.hyperParameterKeywords[0]
+                hyperParameterKeyword = inferenceClasses.hyperParameterKeywords[
+                    0]
                 hyperParameterDoc = inferenceClasses.hyperParametersDoc[0]
-                print("      * %s : %s" % (hyperParameterKeyword, hyperParameterDoc))
+                print("      * %s : %s" %
+                      (hyperParameterKeyword, hyperParameterDoc))
                 #  loop over all hyperparamtersbound
                 for hyperParameters in inferenceClasses.implDict.keys():
                     hyperParameter = hyperParameters[0]
@@ -501,7 +500,8 @@ def classGenerator(
                     [solverC, paramC] = dictElement(classes)
                     assert len(hyperParameters) == 1
                     if(solverC._isDefault()):
-                        print("          - ``'%s'`` (default)\n" % (hyperParameter,))
+                        print("          - ``'%s'`` (default)\n" %
+                              (hyperParameter,))
                     else:
                         print("          - ``'%s'``\n" % (hyperParameter,))
 
@@ -521,7 +521,7 @@ def classGenerator(
                     inferenceClasses.hyperParameterKeywords[0]
                 hyperParameterDoc = inferenceClasses.hyperParametersDoc[0]
                 print(("      * %s : %s"
-                      % (hyperParameterKeyword, hyperParameterDoc)))
+                       % (hyperParameterKeyword, hyperParameterDoc)))
                 #  loop over all hyperparamters
                 for hyperParameters in inferenceClasses.implDict.keys():
                     hyperParameter = hyperParameters[0]
@@ -532,10 +532,10 @@ def classGenerator(
                     assert len(hyperParameters) == 1
                     if(solverC._isDefault()):
                         print(("          - ``'%s'`` (default)\n"
-                              % (hyperParameter,)))
+                               % (hyperParameter,)))
                     else:
                         print(("          - ``'%s'``\n"
-                              % (hyperParameter,)))
+                               % (hyperParameter,)))
 
                 for hyperParameters in inferenceClasses.implDict.keys():
                     hyperParameter = hyperParameters[0]
@@ -552,7 +552,7 @@ def classGenerator(
                     hyperParameter = hyperParameters[0]
 
                     print(("        ``if %s == %s`` : \n\n"
-                          % (hyperParameterKeyword, hyperParameter)))
+                           % (hyperParameterKeyword, hyperParameter)))
                     exampleParam = paramC()
                     exampleParam.set()
                     print(exampleParam._str_spaced_('      '))
@@ -582,21 +582,19 @@ def classGenerator(
         '_selectedInfParamClass': None
     }
 
-
-
-    def _generateFunction_(function,fname):
-        def _f_(self,*args,**kwargs):
-            attr  = getattr(self.inference, fname)
-            return attr(*args,**kwargs)
-        _f_.__doc__=function.__doc__
+    def _generateFunction_(function, fname):
+        def _f_(self, *args, **kwargs):
+            attr = getattr(self.inference, fname)
+            return attr(*args, **kwargs)
+        _f_.__doc__ = function.__doc__
         return _f_
 
     for m in members:
-        if m[0].startswith('_') or m[0].endswith('_') :
+        if m[0].startswith('_') or m[0].endswith('_'):
             pass
-        else :
-            memberDict[m[0]]=_generateFunction_(m[1],m[0])
-            
+        else:
+            memberDict[m[0]] = _generateFunction_(m[1], m[0])
+
     """
     if hasattr(exampleClass, "reset"):
         memberDict['reset'] = reset
@@ -627,9 +625,7 @@ def classGenerator(
 
     infClass.__init__ = inference_init
 
-
     infClass.get_cpp_parameter = get_cpp_parameter
-
 
     # print to string!!!
     old_stdout = sys.stdout

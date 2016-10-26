@@ -1,5 +1,6 @@
-import numpy 
-from dtypes import index_type,value_type,label_type 
+import numpy
+from dtypes import index_type, value_type, label_type
+
 
 class FactorSubset(object):
     """ Holds a subset of factor indices of a graphical model.
@@ -39,25 +40,26 @@ class FactorSubset(object):
         7
 
     """
-    def __init__(self,gm,factorIndices=None):
-        self.gm=gm
+
+    def __init__(self, gm, factorIndices=None):
+        self.gm = gm
         if factorIndices is None:
-            self.factorIndices=numpy.arange(gm.numberOfFactors,dtype=index_type)
-        else :
-            self.factorIndices=factorIndices
+            self.factorIndices = numpy.arange(
+                gm.numberOfFactors, dtype=index_type)
+        else:
+            self.factorIndices = factorIndices
 
     def __len__(self):
         """ get the number of factors within the factorSubset """
         return len(self.factorIndices)
 
-
     def numberOfVariables(self):
         """ get the number variables for each factors within the factorSubset """
         return self.gm._factor_numberOfVariables(self.factorIndices)
 
-    def gmLabelsToFactorLabels(self,labels):
-        numpyLabels=numpy.require(labels,dtype=label_type)
-        return self.gm._factor_gmLablingToFactorLabeling(self.factorIndices,labels)
+    def gmLabelsToFactorLabels(self, labels):
+        numpyLabels = numpy.require(labels, dtype=label_type)
+        return self.gm._factor_gmLablingToFactorLabeling(self.factorIndices, labels)
 
     def variableIndices(self):
         return self.gm._factor_variableIndices(self.factorIndices)
@@ -68,38 +70,39 @@ class FactorSubset(object):
     def isSubmodular(self):
         return self.gm._factor_isSubmodular(self.factorIndices)
 
-    def mapScalarReturning(self,function,dtype):
-        if(dtype==numpy.float32):
-            return self.gm._factor_scalarRetFunction_float32(function,self.factorIndices)
-        elif(dtype==numpy.float64):
-            return self.gm._factor_scalarRetFunction_float64(function,self.factorIndices)
-        elif(dtype==numpy.uint64):
-            return self.gm._factor_scalarRetFunction_uint64(function,self.factorIndices)
-        elif(dtype==numpy.int64):
-            return self.gm._factor_scalarRetFunction_int64(function,self.factorIndices)
-        elif(dtype==numpy.bool):
-            return self.gm._factor_scalarRetFunction_bool(function,self.factorIndices)
+    def mapScalarReturning(self, function, dtype):
+        if(dtype == numpy.float32):
+            return self.gm._factor_scalarRetFunction_float32(function, self.factorIndices)
+        elif(dtype == numpy.float64):
+            return self.gm._factor_scalarRetFunction_float64(function, self.factorIndices)
+        elif(dtype == numpy.uint64):
+            return self.gm._factor_scalarRetFunction_uint64(function, self.factorIndices)
+        elif(dtype == numpy.int64):
+            return self.gm._factor_scalarRetFunction_int64(function, self.factorIndices)
+        elif(dtype == numpy.bool):
+            return self.gm._factor_scalarRetFunction_bool(function, self.factorIndices)
         else:
-            raise RuntimeError("dtype %s is not supported, so far only float32, float64, int64, uint64 and bool are supported")% (str(dtype),)
+            raise RuntimeError(
+                "dtype %s is not supported, so far only float32, float64, int64, uint64 and bool are supported") % (str(dtype),)
 
-    def fullIncluedFactors(self,vis):
-        visNumpy=numpy.require(vis,dtype=index_type)
-        return self.gm._factor_fullIncluedFactors(self.factorIndices,visNumpy)
+    def fullIncluedFactors(self, vis):
+        visNumpy = numpy.require(vis, dtype=index_type)
+        return self.gm._factor_fullIncluedFactors(self.factorIndices, visNumpy)
 
-    def evaluate(self,labels):
-        labelsNumpy=numpy.require(labels,dtype=label_type)
-        if(labelsNumpy.ndim==1 and labelsNumpy.shape[0] == self.gm.numberOfLabels):
-            return self.gm._factor_evaluateGmLabeling(self.factorIndices,labelsNumpy)
-        else :
-            if labelsNumpy.ndim==1:
-                labelsNumpy=labelsNumpy.reshape([1,-1])
-            return self.gm._factor_evaluateFactorLabeling(self.factorIndices,labelsNumpy)
+    def evaluate(self, labels):
+        labelsNumpy = numpy.require(labels, dtype=label_type)
+        if(labelsNumpy.ndim == 1 and labelsNumpy.shape[0] == self.gm.numberOfLabels):
+            return self.gm._factor_evaluateGmLabeling(self.factorIndices, labelsNumpy)
+        else:
+            if labelsNumpy.ndim == 1:
+                labelsNumpy = labelsNumpy.reshape([1, -1])
+            return self.gm._factor_evaluateFactorLabeling(self.factorIndices, labelsNumpy)
 
-    def factorsWithOrder(self,order):
-        return self.gm._factor_withOrder(self.factorIndices,int(order))
+    def factorsWithOrder(self, order):
+        return self.gm._factor_withOrder(self.factorIndices, int(order))
 
 
 if __name__ == "__main__":
-  import doctest
-  import opengm
-  doctest.testmod()
+    import doctest
+    import opengm
+    doctest.testmod()

@@ -1,78 +1,81 @@
 import numpy
 
-from opengmcore._opengmcore import (SparseFunction, 
+from opengmcore._opengmcore import (SparseFunction,
                                     TruncatedAbsoluteDifferenceFunction,
                                     TruncatedSquaredDifferenceFunction,
                                     PottsFunction, PottsNFunction,
-                                    PottsGFunction ,
-                                    SparseFunctionVector, 
+                                    PottsGFunction,
+                                    SparseFunctionVector,
                                     TruncatedAbsoluteDifferenceFunctionVector,
                                     TruncatedSquaredDifferenceFunctionVector,
                                     PottsFunctionVector, PottsNFunctionVector,
-                                    PottsGFunctionVector ,
-                                    
+                                    PottsGFunctionVector,
+
                                     )
 
-from opengmcore import value_type,index_type,label_type
+from opengmcore import value_type, index_type, label_type
 
 
+def pottsFunctions(shape, valueEqual, valueNotEqual):
+    order = len(shape)
+    numL0 = numpy.array([int(shape[0])], dtype=label_type)
+    numL1 = numpy.array([int(shape[1])], dtype=label_type)
 
-def pottsFunctions(shape,valueEqual,valueNotEqual):
-  order = len(shape)
-  numL0 = numpy.array([int(shape[0])],dtype=label_type)
-  numL1 = numpy.array([int(shape[1])],dtype=label_type)
-
-  if order == 2:
-    return PottsFunctionVector(numL0,numL1,numpy.require(valueEqual,dtype=value_type),
-                                      numpy.require(valueNotEqual,dtype=value_type) )
-  elif order > 2:
-    raise RuntimeError("not yet implemented")
-  elif order < 2:
-    raise RuntimeError("len(shape)>=2 is violated")
-
-
-def relabeledPottsFunctions(shape, relabelings, valueEqual,valueNotEqual, dtype=value_type):
-  order = len(shape)
-  numL0 = int(shape[0])
-  numL1 = int(shape[1])
-
-def differenceFunctions(shape, norm, weight, truncate=None,dtype=value_type):
-  order  = len(shape)
-  numL0  = int(shape[0])
-  numL1  = int(shape[1])
-  lMax   = max(numL0,numL1)
-  weight = numpy.require(weight,dtype=value_type)
-  if truncate is None:
-    truncate = numpy.ones(1,dtype=value_typ)*(abs(lMax)**norm)
-  else :
-    truncate = numpy.require(trunacte=dtype,valueType=value_type)
-
-  if norm == 1 :
-    return opengm.TruncatedAbsoluteDifferenceFunctionVector(shape=shape,weigh=weight,truncate=truncate)
-  elif norm == 2 :
-    return opengm.SquaredAbsoluteDifferenceFunctionVector(shape=shape,weigh=weight,truncate=truncate)
-  else :
-    return opengm.explicitDifferenceFunction(shape=shape,weigh=weight,truncate=truncate)
+    if order == 2:
+        return PottsFunctionVector(numL0, numL1, numpy.require(valueEqual, dtype=value_type),
+                                   numpy.require(valueNotEqual, dtype=value_type))
+    elif order > 2:
+        raise RuntimeError("not yet implemented")
+    elif order < 2:
+        raise RuntimeError("len(shape)>=2 is violated")
 
 
-def relabeledDifferenceFunctions(shape, relabelings, norm=2, weight=1.0,truncate=None, dtype=value_type):
-  order = len(shape)
-  numL0 = int(shape[0])
-  numL1 = int(shape[1])
+def relabeledPottsFunctions(shape, relabelings, valueEqual, valueNotEqual, dtype=value_type):
+    order = len(shape)
+    numL0 = int(shape[0])
+    numL1 = int(shape[1])
+
+
+def differenceFunctions(shape, norm, weight, truncate=None, dtype=value_type):
+    order = len(shape)
+    numL0 = int(shape[0])
+    numL1 = int(shape[1])
+    lMax = max(numL0, numL1)
+    weight = numpy.require(weight, dtype=value_type)
+    if truncate is None:
+        truncate = numpy.ones(1, dtype=value_typ) * (abs(lMax)**norm)
+    else:
+        truncate = numpy.require(trunacte=dtype, valueType=value_type)
+
+    if norm == 1:
+        return opengm.TruncatedAbsoluteDifferenceFunctionVector(shape=shape, weigh=weight, truncate=truncate)
+    elif norm == 2:
+        return opengm.SquaredAbsoluteDifferenceFunctionVector(shape=shape, weigh=weight, truncate=truncate)
+    else:
+        return opengm.explicitDifferenceFunction(shape=shape, weigh=weight, truncate=truncate)
+
+
+def relabeledDifferenceFunctions(shape, relabelings, norm=2, weight=1.0, truncate=None, dtype=value_type):
+    order = len(shape)
+    numL0 = int(shape[0])
+    numL1 = int(shape[1])
+
 
 def randomFunctions(shape):
-  order = len(shape)
-  numL0 = int(shape[0])
-  numL1 = int(shape[1])
-
-def sparseFunctions(*args,**kwargs):
-  order = len(shape)
-  numL0 = int(shape[0])
-  numL1 = int(shape[1])
+    order = len(shape)
+    numL0 = int(shape[0])
+    numL1 = int(shape[1])
 
 
-def sparseFunction(*args,**kwargs):
-  pass
+def sparseFunctions(*args, **kwargs):
+    order = len(shape)
+    numL0 = int(shape[0])
+    numL1 = int(shape[1])
+
+
+def sparseFunction(*args, **kwargs):
+    pass
+
 
 def randomFunction(shape):
     tshape = tuple(x for x in shape)
@@ -202,12 +205,12 @@ def differenceFunction(shape, norm=2, weight=1.0, truncate=None,
     if norm == 1:
         if truncate is None:
             # BUG: undefined function
-            return TruncatedAbsoluteDifferenceFunction(shape,truncate=float(max(shape[0],shape[1])), weight=float(weight))
+            return TruncatedAbsoluteDifferenceFunction(shape, truncate=float(max(shape[0], shape[1])), weight=float(weight))
         else:
             return TruncatedAbsoluteDifferenceFunction(shape, truncate=float(truncate), weight=float(weight))
     elif norm == 2:
         if truncate is None:
-            return TruncatedSquaredDifferenceFunction(shape,truncate=float( max(shape[0],shape[1])**2), weight=float(weight))
+            return TruncatedSquaredDifferenceFunction(shape, truncate=float(max(shape[0], shape[1])**2), weight=float(weight))
         else:
             return TruncatedSquaredDifferenceFunction(shape, truncate=float(truncate), weight=float(weight))
     else:
@@ -265,32 +268,22 @@ def relabeledDifferenceFunction(shape, relabelings, norm=2, weight=1.0,
     return f
 
 
-
-
-def labelSumFunction(shape,allowedLabelSum,valueForbidden=1.0,valueAllowed=0.0):
-    ranges=[]
+def labelSumFunction(shape, allowedLabelSum, valueForbidden=1.0, valueAllowed=0.0):
+    ranges = []
     for s in shape:
         ranges.append(numpy.arange(s))
 
     mgRes = numpy.meshgrid(*ranges)
-    f     = numpy.zeros(shape=shape,dtype=value_type)
+    f = numpy.zeros(shape=shape, dtype=value_type)
 
     for r in mgRes:
-        f+=r
+        f += r
 
-    whereAllowed = numpy.where(f==allowedLabelSum)
-    f[:]            = valueForbidden
+    whereAllowed = numpy.where(f == allowedLabelSum)
+    f[:] = valueForbidden
     f[whereAllowed] = valueAllowed
 
     return f
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":

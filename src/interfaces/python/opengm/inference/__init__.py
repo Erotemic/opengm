@@ -1,16 +1,16 @@
 from _inference import *
 
+
 class Minimizer:
-   def neutral(self):
-      return float("inf")
+
+    def neutral(self):
+        return float("inf")
+
 
 class Maximizer:
-   def neutral(self):
-      return float("-inf")
 
-
-
-
+    def neutral(self):
+        return float("-inf")
 
 
 if __name__ == "__main__":
